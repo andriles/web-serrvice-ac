@@ -1,0 +1,672 @@
+html_content = """
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sini Dingin - Teknisi AC Profesional</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --blue:#0EA5E9;--blue2:#0284C7;--blue3:#0369A1;
+  --ice:#E0F2FE;--dark:#0C1A2E;--darker:#071222;
+  --card:#0F2236;--border:#1E3A5F;
+  --text:#E2F0FB;--muted:#7FBBDA;--white:#fff;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--dark);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;overflow-x:hidden;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:.9rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(12,26,46,0.88);backdrop-filter:blur(14px);border-bottom:1px solid rgba(14,165,233,0.15);}
+.logo{font-size:1.35rem;font-weight:800;color:var(--blue);letter-spacing:1px;}
+.logo span{color:var(--white);}
+.nav-links{display:flex;gap:1.8rem;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.88rem;transition:color .25s;}
+.nav-links a:hover{color:var(--blue);}
+.nav-cta{background:var(--blue);color:#fff;padding:.5rem 1.3rem;border-radius:8px;font-weight:700;font-size:.85rem;text-decoration:none;transition:background .2s;}
+.nav-cta:hover{background:var(--blue2);}
+@media(max-width:680px){.nav-links{display:none;}}
+
+/* HERO */
+#hero{min-height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;text-align:center;padding:7rem 1.5rem 4rem;}
+canvas#snow{position:absolute;inset:0;pointer-events:none;z-index:0;}
+.frost-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 60% 40%,rgba(14,165,233,0.12),transparent 65%),radial-gradient(ellipse at 20% 70%,rgba(2,132,199,0.08),transparent 55%);}
+.hero-content{position:relative;z-index:1;}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(14,165,233,0.12);border:1px solid rgba(14,165,233,0.35);color:var(--blue);padding:.4rem 1.1rem;border-radius:20px;font-size:.8rem;font-weight:600;margin-bottom:1.6rem;animation:fadeUp .8s ease both;}
+.hero-title{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;line-height:1.1;margin-bottom:1rem;animation:fadeUp .8s .2s ease both;}
+.hero-title .hi{color:var(--blue);}
+.hero-sub{font-size:1.05rem;color:var(--muted);max-width:540px;margin:0 auto 2.5rem;line-height:1.75;animation:fadeUp .8s .4s ease both;}
+.hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .6s ease both;}
+.btn-blue{background:var(--blue);color:#fff;padding:.8rem 2rem;border-radius:9px;font-weight:700;font-size:.95rem;text-decoration:none;transition:background .2s,transform .2s;display:inline-flex;align-items:center;gap:.5rem;}
+.btn-blue:hover{background:var(--blue2);transform:translateY(-2px);}
+.btn-ghost{border:1px solid rgba(14,165,233,.45);color:var(--blue);padding:.8rem 2rem;border-radius:9px;font-weight:600;font-size:.95rem;text-decoration:none;transition:background .2s;}
+.btn-ghost:hover{background:rgba(14,165,233,.08);}
+.hero-stats{display:flex;gap:2.5rem;justify-content:center;margin-top:3.5rem;flex-wrap:wrap;animation:fadeUp .8s .8s ease both;}
+.h-stat-val{font-size:2rem;font-weight:900;color:var(--blue);}
+.h-stat-lbl{font-size:.78rem;color:var(--muted);margin-top:.15rem;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:translateY(0);}}
+
+/* SECTIONS */
+section{padding:5rem 1.5rem;}
+.container{max-width:1100px;margin:0 auto;}
+.sec-tag{font-size:.72rem;font-weight:800;letter-spacing:2.5px;color:var(--blue);text-transform:uppercase;margin-bottom:.6rem;}
+.sec-title{font-size:clamp(1.7rem,4vw,2.6rem);font-weight:800;margin-bottom:.8rem;}
+.sec-sub{color:var(--muted);font-size:.95rem;line-height:1.75;max-width:580px;}
+
+/* LAYANAN */
+#layanan{background:var(--darker);}
+.layanan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1.4rem;margin-top:2.8rem;}
+.lcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.6rem;transition:border-color .3s,transform .3s;cursor:default;}
+.lcard:hover{border-color:var(--blue);transform:translateY(-4px);}
+.lcard-icon{width:52px;height:52px;background:rgba(14,165,233,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;font-size:1.6rem;}
+.lcard-title{font-size:1rem;font-weight:700;margin-bottom:.5rem;}
+.lcard-desc{font-size:.84rem;color:var(--muted);line-height:1.6;}
+
+/* HARGA */
+.pk-tabs{display:flex;gap:.6rem;margin-top:2.5rem;flex-wrap:wrap;}
+.pk-tab{background:var(--card);border:1px solid var(--border);color:var(--muted);padding:.5rem 1.2rem;border-radius:8px;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;}
+.pk-tab.active,.pk-tab:hover{background:var(--blue);border-color:var(--blue);color:#fff;}
+.price-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin-top:1.5rem;}
+.price-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;transition:border-color .3s;}
+.price-card.featured{border-color:var(--blue);position:relative;}
+.price-badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:.7rem;font-weight:700;padding:.25rem .9rem;border-radius:20px;white-space:nowrap;}
+.price-svc{font-size:.85rem;color:var(--muted);margin-bottom:.5rem;}
+.price-val{font-size:1.6rem;font-weight:900;color:var(--blue);}
+.price-unit{font-size:.78rem;color:var(--muted);margin-top:.2rem;}
+.price-includes{margin-top:1rem;display:flex;flex-direction:column;gap:.4rem;}
+.pi{font-size:.8rem;color:var(--muted);display:flex;align-items:center;gap:.5rem;}
+.pi::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;}
+
+/* PEMESANAN */
+#pesan{background:var(--darker);}
+.pesan-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:3.5rem;align-items:start;}
+@media(max-width:720px){.pesan-wrap{grid-template-columns:1fr;}}
+.pesan-info{display:flex;flex-direction:column;gap:1.3rem;margin-top:1.8rem;}
+.pi-item{display:flex;gap:1rem;align-items:flex-start;}
+.pi-icon{width:44px;height:44px;background:rgba(14,165,233,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.pi-lbl{font-size:.78rem;color:var(--muted);margin-bottom:.15rem;}
+.pi-val{font-weight:600;font-size:.9rem;}
+.form-box{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;}
+.form-box h3{font-size:1.15rem;font-weight:700;margin-bottom:1.5rem;}
+.fg{margin-bottom:1.1rem;}
+.fg label{display:block;font-size:.82rem;color:var(--muted);margin-bottom:.45rem;}
+.fg input,.fg select,.fg textarea{width:100%;background:#071222;border:1px solid var(--border);color:var(--text);padding:.7rem .95rem;border-radius:8px;font-size:.88rem;outline:none;font-family:inherit;transition:border-color .25s;}
+.fg input:focus,.fg select,.fg textarea:focus{border-color:var(--blue);}
+.fg select{cursor:pointer;}
+.fg textarea{min-height:90px;resize:vertical;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+@media(max-width:480px){.fg-row{grid-template-columns:1fr;}}
+.fg select option{background:#0C1A2E;}
+.submit-btn{width:100%;background:var(--blue);color:#fff;border:none;padding:.9rem;border-radius:9px;font-size:.95rem;font-weight:700;cursor:pointer;transition:background .2s,transform .2s;margin-top:.5rem;}
+.submit-btn:hover{background:var(--blue2);transform:translateY(-1px);}
+
+/* KEUNGGULAN */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.3rem;margin-top:2.8rem;}
+.why-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center;}
+.why-num{font-size:2.2rem;font-weight:900;color:var(--blue);margin-bottom:.4rem;}
+.why-title{font-weight:700;font-size:.95rem;margin-bottom:.4rem;}
+.why-desc{font-size:.82rem;color:var(--muted);line-height:1.6;}
+
+/* TESTIMONI */
+#testimoni{background:var(--darker);}
+.testi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.3rem;margin-top:2.8rem;}
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;}
+.stars{color:#F59E0B;font-size:.9rem;margin-bottom:.9rem;}
+.ttext{font-size:.86rem;color:var(--muted);line-height:1.7;font-style:italic;margin-bottom:1.2rem;}
+.tauthor{display:flex;align-items:center;gap:.75rem;}
+.tav{width:38px;height:38px;border-radius:50%;background:rgba(14,165,233,.15);border:1px solid rgba(14,165,233,.3);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--blue);}
+.tname{font-weight:600;font-size:.88rem;}
+.trole{font-size:.75rem;color:var(--muted);}
+
+/* FOOTER */
+footer{background:var(--darker);border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;color:var(--muted);font-size:.83rem;}
+footer span{color:var(--blue);}
+.footer-links{display:flex;gap:1.5rem;justify-content:center;margin-bottom:1rem;flex-wrap:wrap;}
+.footer-links a{color:var(--muted);text-decoration:none;font-size:.83rem;transition:color .2s;}
+.footer-links a:hover{color:var(--blue);}
+
+/* WA FLOAT */
+.wa-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:300;background:#25D366;color:#fff;width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;font-size:1.5rem;box-shadow:0 4px 20px rgba(37,211,102,.4);transition:transform .2s;}
+.wa-float:hover{transform:scale(1.1);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.visible{opacity:1;transform:none;}
+
+/* PRICE HIDE */
+.pk-panel{display:none;}
+.pk-panel.active{display:grid;}
+</style>
+</head>
+<body>
+
+<!-- WA FLOAT -->
+<a href="https://wa.me/6281200000000" class="wa-float" target="_blank" title="Chat WhatsApp">💬</a>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">❄️ SINI<span>DINGIN</span></div>
+  <ul class="nav-links">
+    <li><a href="#layanan">Layanan</a></li>
+    <li><a href="#harga">Harga</a></li>
+    <li><a href="#pesan">Pesan</a></li>
+    <li><a href="#testimoni">Testimoni</a></li>
+  </ul>
+  <a href="#pesan" class="nav-cta">Pesan Sekarang</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="snow"></canvas>
+  <div class="frost-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">❄️ Teknisi AC Profesional & Bergaransi</div>
+    <h1 class="hero-title">Servis AC Cepat,<br><span class="hi">Dingin Seketika!</span></h1>
+    <p class="hero-sub">Sini Dingin hadir untuk semua kebutuhan AC Anda — servis, cuci, pasang, bongkar. Teknisi bersertifikat, harga transparan, garansi pekerjaan.</p>
+    <div class="hero-btns">
+      <a href="#pesan" class="btn-blue">❄️ Pesan Sekarang</a>
+      <a href="#harga" class="btn-ghost">Lihat Harga</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="h-stat-val">2.000+</div><div class="h-stat-lbl">Unit Ditangani</div></div>
+      <div><div class="h-stat-val">8+</div><div class="h-stat-lbl">Tahun Pengalaman</div></div>
+      <div><div class="h-stat-val">99%</div><div class="h-stat-lbl">Kepuasan Pelanggan</div></div>
+      <div><div class="h-stat-val">24 Jam</div><div class="h-stat-lbl">Siap Panggil</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYANAN -->
+<section id="layanan">
+  <div class="container">
+    <p class="sec-tag reveal">Layanan Kami</p>
+    <h2 class="sec-title reveal">Semua Kebutuhan AC Anda</h2>
+    <p class="sec-sub reveal">Kami menangani semua merk AC — Daikin, Panasonic, Samsung, LG, Sharp, Gree, Midea, dan lainnya.</p>
+    <div class="layanan-grid">
+      <div class="lcard reveal">
+        <div class="lcard-icon">🔧</div>
+        <div class="lcard-title">Servis & Perbaikan</div>
+        <div class="lcard-desc">AC tidak dingin, bocor, berisik, mati total? Kami diagnosa dan perbaiki dengan cepat dan tepat.</div>
+      </div>
+      <div class="lcard reveal">
+        <div class="lcard-icon">🫧</div>
+        <div class="lcard-title">Cuci AC</div>
+        <div class="lcard-desc">Cuci indoor & outdoor, bersihkan filter, evaporator, dan kondensor agar AC kembali optimal dan hemat listrik.</div>
+      </div>
+      <div class="lcard reveal">
+        <div class="lcard-icon">🔩</div>
+        <div class="lcard-title">Pemasangan AC Baru</div>
+        <div class="lcard-desc">Instalasi AC baru termasuk pemipaan, kabel, bracket, dan uji coba. Rapi, aman, dan bergaransi.</div>
+      </div>
+      <div class="lcard reveal">
+        <div class="lcard-icon">📦</div>
+        <div class="lcard-title">Bongkar & Relokasi</div>
+        <div class="lcard-desc">Pembongkaran AC pindahan atau renovasi. Proses aman tanpa merusak unit atau dinding.</div>
+      </div>
+      <div class="lcard reveal">
+        <div class="lcard-icon">🧊</div>
+        <div class="lcard-title">Isi Freon</div>
+        <div class="lcard-desc">Pengecekan dan pengisian freon R32, R410A, R22. AC kembali dingin maksimal.</div>
+      </div>
+      <div class="lcard reveal">
+        <div class="lcard-icon">⚡</div>
+        <div class="lcard-title">Darurat 24 Jam</div>
+        <div class="lcard-desc">AC rusak tengah malam? Teknisi kami siap tiba dalam waktu cepat untuk penanganan darurat.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HARGA -->
+<section id="harga" style="background:var(--darker);">
+  <div class="container">
+    <p class="sec-tag reveal">Daftar Harga</p>
+    <h2 class="sec-title reveal">Harga Transparan, Tanpa Biaya Tersembunyi</h2>
+    <p class="sec-sub reveal">Pilih kapasitas AC Anda untuk melihat estimasi harga layanan.</p>
+
+    <div class="pk-tabs reveal" id="pkTabs">
+      <button class="pk-tab active" data-pk="half">½ PK</button>
+      <button class="pk-tab" data-pk="one">1 PK</button>
+      <button class="pk-tab" data-pk="onehalf">1½ PK</button>
+      <button class="pk-tab" data-pk="two">2 PK</button>
+    </div>
+
+    <!-- ½ PK -->
+    <div class="pk-panel price-grid active" id="pk-half">
+      <div class="price-card reveal">
+        <div class="price-svc">Cuci AC</div>
+        <div class="price-val">Rp 80.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Cuci indoor & outdoor</div>
+          <div class="pi">Bersihkan filter</div>
+          <div class="pi">Cek kondisi unit</div>
+        </div>
+      </div>
+      <div class="price-card featured reveal">
+        <div class="price-badge">Terlaris</div>
+        <div class="price-svc">Servis + Cuci</div>
+        <div class="price-val">Rp 150.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Cuci lengkap</div>
+          <div class="pi">Cek & tune-up</div>
+          <div class="pi">Garansi 1 bulan</div>
+        </div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-svc">Pemasangan</div>
+        <div class="price-val">Rp 350.000</div>
+        <div class="price-unit">sudah termasuk pipa 3m</div>
+        <div class="price-includes">
+          <div class="pi">Instalasi lengkap</div>
+          <div class="pi">Kabel & bracket</div>
+          <div class="pi">Uji coba & garansi</div>
+        </div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-svc">Bongkar AC</div>
+        <div class="price-val">Rp 150.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Bongkar indoor & outdoor</div>
+          <div class="pi">Vacuum freon (opsional)</div>
+          <div class="pi">Aman & rapi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1 PK -->
+    <div class="pk-panel price-grid" id="pk-one">
+      <div class="price-card reveal">
+        <div class="price-svc">Cuci AC</div>
+        <div class="price-val">Rp 100.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Cuci indoor & outdoor</div>
+          <div class="pi">Bersihkan filter</div>
+          <div class="pi">Cek kondisi unit</div>
+        </div>
+      </div>
+      <div class="price-card featured reveal">
+        <div class="price-badge">Terlaris</div>
+        <div class="price-svc">Servis + Cuci</div>
+        <div class="price-val">Rp 175.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Cuci lengkap</div>
+          <div class="pi">Cek & tune-up</div>
+          <div class="pi">Garansi 1 bulan</div>
+        </div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-svc">Pemasangan</div>
+        <div class="price-val">Rp 400.000</div>
+        <div class="price-unit">sudah termasuk pipa 3m</div>
+        <div class="price-includes">
+          <div class="pi">Instalasi lengkap</div>
+          <div class="pi">Kabel & bracket</div>
+          <div class="pi">Uji coba & garansi</div>
+        </div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-svc">Bongkar AC</div>
+        <div class="price-val">Rp 175.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Bongkar indoor & outdoor</div>
+          <div class="pi">Vacuum freon (opsional)</div>
+          <div class="pi">Aman & rapi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1½ PK -->
+    <div class="pk-panel price-grid" id="pk-onehalf">
+      <div class="price-card reveal">
+        <div class="price-svc">Cuci AC</div>
+        <div class="price-val">Rp 220.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Cuci indoor & outdoor</div>
+          <div class="pi">Bersihkan filter</div>
+          <div class="pi">Cek kondisi unit</div>
+        </div>
+      </div>
+      <div class="price-card featured reveal">
+        <div class="price-badge">Terlaris</div>
+        <div class="price-svc">Servis + Cuci</div>
+        <div class="price-val">Rp 250.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Cuci lengkap</div>
+          <div class="pi">Cek & tune-up</div>
+          <div class="pi">Garansi 1 bulan</div>
+        </div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-svc">Pemasangan</div>
+        <div class="price-val">Rp 550.000</div>
+        <div class="price-unit">sudah termasuk pipa 3m</div>
+        <div class="price-includes">
+          <div class="pi">Instalasi lengkap</div>
+          <div class="pi">Kabel & bracket</div>
+          <div class="pi">Uji coba & garansi</div>
+        </div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-svc">Bongkar AC</div>
+        <div class="price-val">Rp 200.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Bongkar indoor & outdoor</div>
+          <div class="pi">Vacuum freon (opsional)</div>
+          <div class="pi">Aman & rapi</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 PK -->
+    <div class="pk-panel price-grid" id="pk-two">
+      <div class="price-card reveal">
+        <div class="price-svc">Cuci AC</div>
+        <div class="price-val">Rp 150.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Cuci indoor & outdoor</div>
+          <div class="pi">Bersihkan filter</div>
+          <div class="pi">Cek kondisi unit</div>
+        </div>
+      </div>
+      <div class="price-card featured reveal">
+        <div class="price-badge">Terlaris</div>
+        <div class="price-svc">Servis + Cuci</div>
+        <div class="price-val">Rp 250.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Cuci lengkap</div>
+          <div class="pi">Cek & tune-up</div>
+          <div class="pi">Garansi 1 bulan</div>
+        </div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-svc">Pemasangan</div>
+        <div class="price-val">Rp 550.000</div>
+        <div class="price-unit">sudah termasuk pipa 3m</div>
+        <div class="price-includes">
+          <div class="pi">Instalasi lengkap</div>
+          <div class="pi">Kabel & bracket</div>
+          <div class="pi">Uji coba & garansi</div>
+        </div>
+      </div>
+      <div class="price-card reveal">
+        <div class="price-svc">Bongkar AC</div>
+        <div class="price-val">Rp 225.000</div>
+        <div class="price-unit">per unit</div>
+        <div class="price-includes">
+          <div class="pi">Bongkar indoor & outdoor</div>
+          <div class="pi">Vacuum freon (opsional)</div>
+          <div class="pi">Aman & rapi</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PEMESANAN -->
+<section id="pesan">
+  <div class="container">
+    <div class="pesan-wrap">
+      <div>
+        <p class="sec-tag reveal">Pesan Sekarang</p>
+        <h2 class="sec-title reveal">Jadwalkan Kunjungan Teknisi</h2>
+        <p class="sec-sub reveal">Isi form di samping dan teknisi kami akan menghubungi Anda dalam 15 menit untuk konfirmasi jadwal.</p>
+        <div class="pesan-info reveal">
+          <div class="pi-item">
+            <div class="pi-icon">⚡</div>
+            <div><div class="pi-lbl">Respon Cepat</div><div class="pi-val">Konfirmasi dalam 15 menit</div></div>
+          </div>
+          <div class="pi-item">
+            <div class="pi-icon">🛡️</div>
+            <div><div class="pi-lbl">Bergaransi</div><div class="pi-val">Garansi kerja hingga 1 bulan</div></div>
+          </div>
+          <div class="pi-item">
+            <div class="pi-icon">💳</div>
+            <div><div class="pi-lbl">Bayar Setelah Selesai</div><div class="pi-val">Cash, transfer, atau QRIS</div></div>
+          </div>
+          <div class="pi-item">
+            <div class="pi-icon">📍</div>
+            <div><div class="pi-lbl">Area Layanan</div><div class="pi-val">Bandung & sekitarnya</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="form-box reveal">
+        <h3>Form Pemesanan</h3>
+        <div class="fg">
+          <label>Nama Lengkap</label>
+          <input type="text" placeholder="Nama Anda" id="f-nama">
+        </div>
+        <div class="fg-row">
+          <div class="fg">
+            <label>No. WhatsApp</label>
+            <input type="text" placeholder="+62 8xx-xxxx" id="f-wa">
+          </div>
+          <div class="fg">
+            <label>Jenis Layanan</label>
+            <select id="f-svc">
+              <option value="">-- Pilih --</option>
+              <option>Servis & Perbaikan</option>
+              <option>Cuci AC</option>
+              <option>Servis + Cuci</option>
+              <option>Pemasangan AC Baru</option>
+              <option>Bongkar / Relokasi</option>
+              <option>Isi Freon</option>
+              <option>Darurat</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="fg">
+            <label>Merk AC</label>
+            <select id="f-merk">
+              <option value="">-- Pilih --</option>
+              <option>Daikin</option>
+              <option>Panasonic</option>
+              <option>Samsung</option>
+              <option>LG</option>
+              <option>Sharp</option>
+              <option>Gree</option>
+              <option>Midea</option>
+              <option>Lainnya</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label>Kapasitas AC</label>
+            <select id="f-pk">
+              <option value="">-- Pilih --</option>
+              <option>½ PK</option>
+              <option>1 PK</option>
+              <option>1½ PK</option>
+              <option>2 PK</option>
+              <option>Lebih dari 2 PK</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg-row">
+          <div class="fg">
+            <label>Tanggal</label>
+            <input type="date" id="f-tgl">
+          </div>
+          <div class="fg">
+            <label>Waktu</label>
+            <select id="f-time">
+              <option>08:00 - 10:00</option>
+              <option>10:00 - 12:00</option>
+              <option>12:00 - 14:00</option>
+              <option>14:00 - 16:00</option>
+              <option>16:00 - 18:00</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Alamat Lengkap</label>
+          <input type="text" placeholder="Jl. ..., No. ..., Kecamatan, Kota" id="f-alamat">
+        </div>
+        <div class="fg">
+          <label>Keterangan Tambahan (opsional)</label>
+          <textarea placeholder="Ceritakan kondisi AC Anda atau permintaan khusus..." id="f-ket"></textarea>
+        </div>
+        <button class="submit-btn" id="submitBtn">❄️ Kirim Pesanan via WhatsApp</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- KEUNGGULAN -->
+<section id="keunggulan" style="background:var(--darker);">
+  <div class="container">
+    <p class="sec-tag reveal">Keunggulan Kami</p>
+    <h2 class="sec-title reveal">Kenapa Pilih Sini Dingin?</h2>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-num">⚡</div>
+        <div class="why-title">Respon Cepat</div>
+        <div class="why-desc">Konfirmasi dalam 15 menit, teknisi tiba sesuai jadwal yang Anda tentukan.</div>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">🎓</div>
+        <div class="why-title">Teknisi Bersertifikat</div>
+        <div class="why-desc">Semua teknisi kami telah bersertifikat dan berpengalaman lebih dari 5 tahun.</div>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">🛡️</div>
+        <div class="why-title">Garansi Pekerjaan</div>
+        <div class="why-desc">Setiap pekerjaan bergaransi hingga 1 bulan. Tidak puas? Kami kembali tanpa biaya tambahan.</div>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">💰</div>
+        <div class="why-title">Harga Transparan</div>
+        <div class="why-desc">Tidak ada biaya tersembunyi. Harga sudah termasuk jasa dan pengecekan awal.</div>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">🌙</div>
+        <div class="why-title">Layanan 24 Jam</div>
+        <div class="why-desc">Darurat AC mati tengah malam? Kami siap tiba kapan pun Anda butuhkan.</div>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">🔧</div>
+        <div class="why-title">Semua Merk</div>
+        <div class="why-desc">Menangani semua merk dan tipe AC: split, cassette, standing, central, dan lainnya.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONI -->
+<section id="testimoni">
+  <div class="container">
+    <p class="sec-tag reveal">Testimoni</p>
+    <h2 class="sec-title reveal">Kata Pelanggan Kami</h2>
+    <div class="testi-grid">
+      <div class="tcard reveal">
+        <div class="stars">★★★★★</div>
+        <div class="ttext">"AC rumah saya sudah 2 tahun tidak pernah dicuci, setelah dipanggil Sini Dingin langsung berasa dinginnya. Teknisinya ramah dan cepat!"</div>
+        <div class="tauthor"><div class="tav">RA</div><div><div class="tname">Rina Agustina</div><div class="trole">Ibu Rumah Tangga, Bandung</div></div></div>
+      </div>
+      <div class="tcard reveal">
+        <div class="stars">★★★★★</div>
+        <div class="ttext">"Pasang 3 unit AC di rumah baru, dikerjain dalam sehari, rapi banget instalasinya. Harga sesuai penawaran, tidak ada biaya tambahan. Recommended!"</div>
+        <div class="tauthor"><div class="tav">DP</div><div><div class="tname">Dimas Prasetyo</div><div class="trole">Pemilik Rumah, Cimahi</div></div></div>
+      </div>
+      <div class="tcard reveal">
+        <div class="stars">★★★★★</div>
+        <div class="ttext">"AC kantor kami bocor tengah hari, langsung hubungi Sini Dingin. Teknisi datang dalam 1 jam dan langsung beres. Pelayanan darurat yang memuaskan!"</div>
+        <div class="tauthor"><div class="tav">FK</div><div><div class="tname">Fitria Kusuma</div><div class="trole">Office Manager, Bandung</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-links">
+    <a href="#layanan">Layanan</a>
+    <a href="#harga">Harga</a>
+    <a href="#pesan">Pesan</a>
+    <a href="#testimoni">Testimoni</a>
+  </div>
+  <p>&copy; 2024 <span>SiniDingin.com</span> — Teknisi AC Profesional Bandung. Semua hak dilindungi.</p>
+</footer>
+
+<script>
+// Snow
+(function(){
+  const c = document.getElementById('snow');
+  const ctx = c.getContext('2d');
+  let W, H, flakes=[];
+  function resize(){W=c.width=window.innerWidth;H=c.height=window.innerHeight;}
+  resize(); window.addEventListener('resize',resize);
+  for(let i=0;i<90;i++) flakes.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2.5+.5,s:Math.random()*.6+.2,o:Math.random()*.5+.2});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    flakes.forEach(f=>{
+      ctx.beginPath();ctx.arc(f.x,f.y,f.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(224,242,254,${f.o})`;ctx.fill();
+      f.y+=f.s; f.x+=Math.sin(Date.now()/3000+f.y/50)*.3;
+      if(f.y>H){f.y=0;f.x=Math.random()*W;}
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// PK tabs
+document.getElementById('pkTabs').addEventListener('click',e=>{
+  const btn=e.target.closest('.pk-tab');
+  if(!btn)return;
+  document.querySelectorAll('.pk-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.pk-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pk-'+btn.dataset.pk).classList.add('active');
+});
+
+// Scroll reveal
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t)t.scrollIntoView({behavior:'smooth'});
+  });
+});
+
+// Submit → WA
+document.getElementById('submitBtn').addEventListener('click',()=>{
+  const nama=document.getElementById('f-nama').value.trim();
+  const wa=document.getElementById('f-wa').value.trim();
+  const svc=document.getElementById('f-svc').value;
+  const merk=document.getElementById('f-merk').value;
+  const pk=document.getElementById('f-pk').value;
+  const tgl=document.getElementById('f-tgl').value;
+  const time=document.getElementById('f-time').value;
+  const alamat=document.getElementById('f-alamat').value.trim();
+  const ket=document.getElementById('f-ket').value.trim();
+  if(!nama||!wa||!svc||!alamat){alert('Mohon isi nama, WhatsApp, layanan, dan alamat terlebih dahulu.');return;}
+  const msg=`Halo Sini Dingin! Saya ingin memesan layanan:\n\n👤 Nama: ${nama}\n📱 WA: ${wa}\n🔧 Layanan: ${svc}\n❄️ Merk AC: ${merk||'-'}\n⚡ Kapasitas: ${pk||'-'}\n📅 Tanggal: ${tgl||'-'}\n⏰ Waktu: ${time}\n📍 Alamat: ${alamat}${ket?'\n📝 Keterangan: '+ket:''}\n\nMohon konfirmasi jadwal teknisi. Terima kasih!`;
+  window.open('https://wa.me/0895335374836?text='+encodeURIComponent(msg),'_blank');
+});
+
+// Set min date
+const d=new Date(); d.setDate(d.getDate());
+document.getElementById('f-tgl').min=d.toISOString().split('T')[0];
+</script>
+</body>
+</html>
+"""
+
+HTML(html_content)
